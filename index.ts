@@ -6,7 +6,7 @@ type Pizza = {
 type Order = {
   id: number;
   pizza: Pizza;
-  status: string;
+  status: "ordered" | "completed";
 };
 
 const menu = [
@@ -19,7 +19,7 @@ const menu = [
 let cashInRegister = 100;
 let nextOrderId = 1;
 
-const orderQueue: Order[] = [];
+const orderHistory: Order[] = [];
 
 function addNewPizza(newPizzaObj: Pizza) {
   menu.push(newPizzaObj);
@@ -35,18 +35,22 @@ function placeOrder(pizzaName: string) {
 
   cashInRegister += choosenPizza.price;
 
-  let newOrder = { id: nextOrderId++, pizza: choosenPizza, status: "ordered" };
+  let newOrder: Order = {
+    id: nextOrderId++,
+    pizza: choosenPizza,
+    status: "ordered",
+  };
 
-  orderQueue.push(newOrder);
+  orderHistory.push(newOrder);
 
   return newOrder;
 }
 
 function completeOrder(orderId: number) {
-  let order = orderQueue.find((order) => order.id === orderId);
+  let order = orderHistory.find((order) => order.id === orderId);
 
   if (!order) {
-    console.error(`${orderId} was not found in the orderQueue`);
+    console.error(`${orderId} was not found in the orderHistory`);
     return;
   }
 
@@ -63,4 +67,4 @@ completeOrder(1);
 
 console.log("Menu:", menu);
 console.log("Cash in register:", cashInRegister);
-console.log("Order queue:", orderQueue);
+console.log("Order queue:", orderHistory);
