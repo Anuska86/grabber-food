@@ -22,16 +22,16 @@ let nextOrderId = 1;
 
 const orderHistory: Order[] = [];
 
-function addNewPizza(newPizzaObj: Pizza) {
+function addNewPizza(newPizzaObj: Pizza): void {
   menu.push(newPizzaObj);
 }
 
-function placeOrder(pizzaName: string) {
+function placeOrder(pizzaName: string): Order {
   let choosenPizza = menu.find((newPizzaObj) => newPizzaObj.name === pizzaName);
 
   if (!choosenPizza) {
     console.error(`$(pizzaName) does not exist in the menu`);
-    return;
+    throw new TypeError(`$(pizzaName) does not exist in the menu`);
   }
 
   cashInRegister += choosenPizza.price;
@@ -47,12 +47,12 @@ function placeOrder(pizzaName: string) {
   return newOrder;
 }
 
-function completeOrder(orderId: number) {
+function completeOrder(orderId: number): Order {
   let order = orderHistory.find((order) => order.id === orderId);
 
   if (!order) {
     console.error(`${orderId} was not found in the orderHistory`);
-    return;
+    throw new TypeError(`${orderId} was not found in the orderHistory`);
   }
 
   order.status = "completed";
@@ -64,8 +64,10 @@ function getPizzaDetail(identifier: string | number) {
     return menu.find(
       (pizza) => pizza.name.toLowerCase() === identifier.toLowerCase(),
     );
-  } else {
+  } else if (typeof identifier === "number") {
     return menu.find((pizza) => pizza.id === identifier);
+  } else {
+    throw new TypeError("Parameter identifier should be a string or a number");
   }
 }
 
