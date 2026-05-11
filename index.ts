@@ -26,12 +26,12 @@ function addNewPizza(newPizzaObj: Pizza): void {
   menu.push(newPizzaObj);
 }
 
-function placeOrder(pizzaName: string): Order {
+function placeOrder(pizzaName: string): Order | undefined {
   let choosenPizza = menu.find((newPizzaObj) => newPizzaObj.name === pizzaName);
 
   if (!choosenPizza) {
     console.error(`$(pizzaName) does not exist in the menu`);
-    throw new TypeError(`$(pizzaName) does not exist in the menu`);
+    return;
   }
 
   cashInRegister += choosenPizza.price;
@@ -47,12 +47,12 @@ function placeOrder(pizzaName: string): Order {
   return newOrder;
 }
 
-function completeOrder(orderId: number): Order {
+function completeOrder(orderId: number): Order | undefined {
   let order = orderHistory.find((order) => order.id === orderId);
 
   if (!order) {
     console.error(`${orderId} was not found in the orderHistory`);
-    throw new TypeError(`${orderId} was not found in the orderHistory`);
+    return;
   }
 
   order.status = "completed";
