@@ -23,10 +23,15 @@ const menu: Pizza[] = [
 
 const orderHistory: Order[] = [];
 
-function addNewPizza(newPizzaObj: Pizza): void {
-  newPizzaObj.id = nextOrderId++;
+function addNewPizza(newPizzaObj: Omit<Pizza, "id">): Pizza {
+  const addedPizza: Pizza = {
+    id: nextPizzaId++,
+    ...newPizzaObj,
+  };
 
-  menu.push(newPizzaObj);
+  menu.push(addedPizza);
+
+  return addedPizza;
 }
 
 function placeOrder(pizzaName: string): Order | undefined {
